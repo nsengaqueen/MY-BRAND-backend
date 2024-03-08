@@ -7,10 +7,10 @@ import {app} from './app';
 
 dotenv.config();
 
-const MONGO_URI = 'mongodb://localhost:27017/tests';
+const MONGO_URI = 'mongodb+srv://nsengaqueen:Nqueen@072@cluster0.utneeil.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 mongoose
-  .connect(MONGO_URI, {
+  .connect(process.env.DATABASE_URL || '', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
    
