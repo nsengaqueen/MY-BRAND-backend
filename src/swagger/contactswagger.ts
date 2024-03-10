@@ -57,7 +57,7 @@
 
 /**
  * @swagger
- * message/{id}:
+ * /message/{id}:
  *   get:
  *     summary: Get a specific contact message by ID
  *     description: Retrieves a specific contact message by its ID.

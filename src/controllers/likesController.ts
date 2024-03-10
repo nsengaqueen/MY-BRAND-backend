@@ -42,16 +42,9 @@ export default class CommentController {
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
-      // if (!req.user || !req.user.id) {
-      //   return res.status(401).json({ message: "Unauthorized" });
-      // }
-      // if (blog.likedBy.includes(req.user.id)) {
-      //   return res
-      //     .status(400)
-      //     .json({ message: "Blog already liked" });
-      // }
+    
       blog.likes++;
-      // blog.likedBy.push(req.user.id);
+      
       await blog.save();
   
       return res

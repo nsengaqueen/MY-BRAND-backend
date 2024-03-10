@@ -25,11 +25,12 @@ const authMiddleware = async (
     }
 
     const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET || "");
-
+     console.log(decodedToken)
+     
     if (!decodedToken || typeof decodedToken !== "object" || !decodedToken.id) {
       return res.status(401).json({ message: "Invalid token" });
     }
-
+     
     const user: UserInterface | null = await User.findById(decodedToken.id);
 
     if (user) {

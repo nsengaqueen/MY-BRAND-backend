@@ -11,25 +11,42 @@ import swaggerJSDoc from 'swagger-jsdoc';
 const app: Application = express();
 
 
-const swaggerOptions = {
+
+
+
+const options = {
   swaggerDefinition: {
-    info: {
-      title: 'My Brand',
-      version: '1.0.0',
-      description: 'My API',
-    },
+      openapi: '3.0.0',
+      info: {
+          title: 'My APIs documentation',
+          version: '1.0.0',
+          description: 'This is my API documentation'
+      },
+      components: {
+          securitySchemes: {
+              bearerAuth: {
+                  type: 'apiKey',
+                  scheme: 'bearer',
+                  name: 'Authorization',
+                  in: 'header',
+                  bearerFormat: 'JWT',
+              }
+          }
+      },
+      security: [{
+          bearerAuth: []
+      }],
+      servers: [{
+          url: 'http://localhost:5000'
+      }]
+    
   },
-  apis: ['./swagger/*.ts'], 
-};
-
-const swaggerSpec = swaggerJSDoc(swaggerOptions);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  apis: ['./swagger/*.ts'],
+}
+const specs = swaggerJSDoc(options)
 
 
-
-
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 
