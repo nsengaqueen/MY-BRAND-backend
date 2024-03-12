@@ -69,7 +69,7 @@ export default class UserController {
       expiresIn: "5d",
     });
     return res.status(201).json({
-      data: token,
+      token: token,
       user: saveUser,
       message: "User successfully added",
     });
