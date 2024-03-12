@@ -23,7 +23,7 @@ export default class CommentController {
         return res.status(401).json({ message: "you're required to login" });
       }
       const newcomment = {
-       Name: req.user.Name,
+       Name: req.user.fullName,
         comment: req.body.comment,
       };
   

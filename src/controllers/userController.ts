@@ -1,84 +1,149 @@
-import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import User from '../models/userModel';
+import { Router, Request, Response } from "express";
+import User, { UserInterface } from "../models/userModel";
+import {
+  validateUser,
+  validatelogin,
+  validateUserUpdating,
+} from "../models/userModel";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-
-const generateToken = (id: any) => {
-  return jwt.sign({ id:id }, process.env.JWT_SECRET || '', { expiresIn: '3h' });
-};
-
-
-export const signup = async (req: Request, res: Response, next: NextFunction) => {
-  const { Name,email, password, confirmPassword } = req.body;
-
-  // if (Name! || !email || !password || !confirmPassword) {
-  //   // return res.status(400).json({ error: 'Name,Email, password, and confirm password are required' });
-  // }
-
-
-  if (password !== confirmPassword) {
-    return res.status(400).json({ error: 'Passwords do not match' });
-  }
-
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
-  }
-
-  try {
-  
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+// LOGIN
+export default class UserController {
+  static async login(req: Request, res: Response) {
+    const { error } = validatelogin(req.body);
+    if (error) {
+      return res.status(400).send(error.details[0].message);
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    
-    const newUser = new User({
-      Name,
-      email,
-      password: hashedPassword,
-      confirmPassword:hashedPassword,
-      role: 'user',
+    const user = await User.findOne({
+      email: req.body.email,
     });
- 
-   const user = await newUser.save();
-    
-    const token = generateToken(newUser._id);
 
-    res.status(201).json({ message: 'User created successfully',user,token });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const login = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
-
- 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
-  }
-
-  try {
-
-    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(404).json({ message: "User not found" });
     }
 
-   
-    const token = generateToken(user._id);
+    const validated: boolean = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
 
-    res.status(200).json({ message: 'Login successful', token });
-  } catch (error) {
-    next(error);
+    if (!validated) {
+      return res.status(401).json({ message: "Wrong credentials" });
+    } else {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "", {
+        expiresIn: "1d",
+      });
+      return res.status(200).json({
+        message: "Logged in successfully",
+        token: token,
+        UserRole: user.role,
+        fullName: user.fullName,
+      });
+    }
   }
-};
+  //SIGNUP
+  // ===================================================
+  static async signup(req: Request, res: Response) {
+    const { error } = validateUser(req.body);
+    if (error) {
+      return res.status(400).send(error.details[0].message);
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedpassword = await bcrypt.hash(req.body.password, salt);
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(409).json({
+        message: "This user already exists",
+      });
+    }
+    const newUser = new User({
+      fullName: req.body.fullName,
+      email: req.body.email,
+      userRole: req.body.userRole,
+      password: hashedpassword,
+    });
+
+    const saveUser = await newUser.save();
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || "", {
+      expiresIn: "5d",
+    });
+    return res.status(201).json({
+      data: token,
+      user: saveUser,
+      message: "User successfully added",
+    });
+  }
+
+  //other oprations
+
+  //UPDATE User
+  static async updateT(req: Request, res: Response) {
+    const { error } = validateUserUpdating(req.body);
+    if (error) {
+      return res.status(400).send(error.details[0].message);
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedpassword = await bcrypt.hash(req.body.password, salt);
+    const UserId = req.params.id;
+    const user = await User.findById(UserId);
+    if (!user) {
+      return res.status(404).json({
+        message: "Id of a User not found",
+      });
+    }
+    const { fullName, email, password, userRole } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: UserId },
+      {
+        fullName: fullName ? req.body.fullName : user.fullName,
+        email: email ? req.body.email : user.email,
+        password: password ? hashedpassword : user.password,
+        userRole: userRole ? req.body.userRole : user.role,
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      data: updatedUser,
+      message: "your User was successfully updated",
+    });
+  }
+
+  //DELETE User
+  static async deleteT(req: Request, res: Response) {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Id of a User not found",
+      });
+    } else {
+      await User.findByIdAndDelete(id);
+      return res.status(204).json({
+        message: "User deleted ............",
+      });
+    }
+  }
+
+  //GET User
+  static async findOneUser(req: Request, res: Response) {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      return res.status(200).json({
+        data: user,
+      });
+    } else {
+      return res.status(404).json({ message: "Id of a User not found" });
+    }
+  }
+  //GET ALL Users
+  static async findAllUser(req: Request, res: Response) {
+    const users = await User.find();
+    return res.status(200).json({
+      data: users,
+    });
+  }
+}

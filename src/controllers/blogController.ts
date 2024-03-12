@@ -22,8 +22,13 @@ export const createBlog = async (req: Request, res: Response): Promise<any> => {
     if (!title || !content || !image) {
       return res.status(400).json({ error: 'Title, content, and image are required' });
     }
-
-   
+    const existingBlog = await Blog.findOne({ title: req.body.title });
+    if (existingBlog) {
+      return res.status(409).json({
+        message: "This Blog already exists",
+      });
+    }
+     
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }

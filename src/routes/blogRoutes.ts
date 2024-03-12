@@ -11,8 +11,8 @@ const router = express.Router();
 router.post('/blogs',file.single("image"), createBlog);
 router.get('/blogs',getAllBlogs );
 router.get('/blogs/:id',getBlogById);
-router.put('/blogs/:id', updateBlog);
-router.delete('/blogs/:id', deleteBlog);
+router.put('/blogs/:id',admin, updateBlog);
+router.delete('/blogs/:id',admin, deleteBlog);
 
 
 export default router;
