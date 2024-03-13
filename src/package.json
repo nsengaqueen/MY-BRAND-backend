@@ -10,7 +10,7 @@
     "test:badges": "npm run test:coverage  && jest-coverage-badges",
     "dev": "nodemon",
    
-    "start": "node ../src/index.ts"
+    "start": "node ./src/index.ts"
   },
   "keywords": [],
   "author": "",
