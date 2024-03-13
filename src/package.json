@@ -9,6 +9,7 @@
     "test:watch": "jest --watch --coverage --detectOpenHandles --verbose",
     "test:badges": "npm run test:coverage  && jest-coverage-badges",
     "dev": "nodemon",
+    "prestart": "chmod +x node_modules/.bin/ts-node",
     "start": "ts-node ../src/index.ts"
   },
   "keywords": [],
