@@ -59,7 +59,7 @@
 
 
 
-  "dev": "nodemon",
+  "dev": "nodemon ../src/index.ts",
   
 
 
@@ -68,7 +68,7 @@
 
 
 
-  "start": " nodemon ../src/index.ts"
+  "start": " node ../src/index.ts"
   
 
 
