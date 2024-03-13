@@ -9,7 +9,6 @@
     "test:watch": "jest --watch --coverage --detectOpenHandles --verbose",
     "test:badges": "npm run test:coverage  && jest-coverage-badges",
     "dev": "nodemon",
-   
     "start": "node ../src/index.ts"
   },
   "keywords": [],
@@ -38,6 +37,7 @@
     "@types/swagger-ui-express": "^4.1.6",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   }
 }
