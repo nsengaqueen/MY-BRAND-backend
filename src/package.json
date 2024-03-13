@@ -1,5 +1,5 @@
 {
-  "type": "commonjs",
+  "type": "module",
   "name": "src",
   "version": "1.0.0",
   "description": "",
@@ -9,7 +9,7 @@
     "test:watch": "jest --watch --coverage --detectOpenHandles --verbose",
     "test:badges": "npm run test:coverage  && jest-coverage-badges",
     "dev": "nodemon",
-    "start": "node ../src/index.ts"
+    "start": "npx ts-node ../src/index.ts"
   },
   "keywords": [],
   "author": "",
