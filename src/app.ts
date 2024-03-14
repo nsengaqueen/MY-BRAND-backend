@@ -8,6 +8,7 @@ import blogRoutes from './routes/blogRoutes';
 import likesRoutes from './routes/likesRoutes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import cors from 'cors'
 const app: Application = express();
 
 
@@ -53,7 +54,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 
-
+app.use(cors());
 app.use(blogRoutes);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
