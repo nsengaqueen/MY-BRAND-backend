@@ -54,7 +54,7 @@ export const createBlog = async (req: Request, res: Response): Promise<any> => {
 export const getAllBlogs = async (req: Request, res: Response): Promise<void> => {
   try {
     const blogs: IBlog[] = await Blog.find();
-    res.status(200).json(blogs);
+    res.status(200).json({data:blogs});
   } catch (err) {
     res.status(500).json(err);
   }
