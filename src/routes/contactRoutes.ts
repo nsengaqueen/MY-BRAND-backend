@@ -3,7 +3,7 @@ import { submitContact,findAllMessage,deleteMessage,findMessage } from '../contr
 
 const router = express.Router();
 
-// Endpoint to handle form submission
+
 router.post('/message', submitContact);
 router.get('/message',findAllMessage);
 router.delete('/message/:id',deleteMessage);

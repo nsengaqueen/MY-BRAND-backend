@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "test": "jest  ./src/tests/testing.test.ts --detectOpenHandles",
+    "test": "jest",
     "dev": "ts-node-dev --pretty --respawn ./src/index.ts",
-    "start": "nodemon ./src/index.ts",
-    "coveralls": "jest ./src/tests/testing.test.ts --coverage --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
+    "start": "nodemon ./src/index.ts"
+    
   },
   "author": "",
   "license": "ISC",
@@ -56,7 +56,7 @@
     "nyc": "^15.1.0",
     "sinon": "^17.0.1",
     "supertest": "^6.3.4",
-    "ts-mocha": "^10.0.0",
+    
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tslib": "^2.6.2",

@@ -2,9 +2,7 @@
 import { Request, Response } from 'express';
 import Blog, { IBlog } from '../models/Blog';
 import {v2 as cloudinary} from 'cloudinary';
-import dotenv from "dotenv";
 
-dotenv.config();
  
 cloudinary.config({ 
   cloud_name: 'dzw9v8msm', 
@@ -74,20 +72,39 @@ export const getBlogById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const updateBlog = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const updateBlog = async (req: Request, res: Response) => {
+  // try {
    
     
-    const blogId: string = req.params.id;
-    const updatedBlog: IBlog | null = await Blog.findByIdAndUpdate(blogId, req.body, { new: true });
-    if (!updatedBlog) {
-      res.status(404).json({ message: 'Blog not found' });
-      return;
-    }
-    res.status(200).json(updatedBlog);
-  } catch (err) {
-    res.status(500).json(err);
+  const {Id} = req.params;
+  const blog = await Blog.findById(Id);
+  if (!blog) {
+    return res.status(404).json({
+      message: "Id of a Blog not found",
+    });
   }
+  let result;
+  if (req.file) {
+    result = await cloudinary.uploader.upload(req.file.path);
+  }
+  const { title, content } = req.body;
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    Id,
+    {
+      title: title || blog.title,
+      content: content || blog.content,
+      images: result || blog.images,
+    },
+    { new: true }
+  );
+  return res.status(200).json({
+    data: updatedBlog,
+    message: "your Blog was successfully updated",
+  });
+  // } catch (err) {
+  //   console.log(err)
+  //  return  res.status(500).json(err);
+  // }
 };
 
 export const deleteBlog = async (req: Request, res: Response): Promise<void> => {

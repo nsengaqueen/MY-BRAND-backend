@@ -20,7 +20,7 @@ const userSchema = Joi.object({
 export const validateUser = (data: UserInterface) => {
   return userSchema.validate(data);
 };
-// ===================login validation =================
+
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required(),
@@ -29,7 +29,7 @@ const loginSchema = Joi.object({
 export const validatelogin = (data: UserInterface) => {
   return loginSchema.validate(data);
 };
-// ========================updateUserSchema =================
+
 const updateSchema = Joi.object({
   fullName: Joi.string(),
   email: Joi.string().email(),

@@ -42,8 +42,7 @@ export default class UserController {
       });
     }
   }
-  //SIGNUP
-  // ===================================================
+  
   static async signup(req: Request, res: Response) {
     const { error } = validateUser(req.body);
     if (error) {
@@ -75,9 +74,7 @@ export default class UserController {
     });
   }
 
-  //other oprations
-
-  //UPDATE User
+ 
   static async updateT(req: Request, res: Response) {
     const { error } = validateUserUpdating(req.body);
     if (error) {
@@ -111,7 +108,7 @@ export default class UserController {
     });
   }
 
-  //DELETE User
+ 
   static async deleteT(req: Request, res: Response) {
     const id = req.params.id;
     const user = await User.findById(id);
@@ -128,7 +125,7 @@ export default class UserController {
     }
   }
 
-  //GET User
+
   static async findOneUser(req: Request, res: Response) {
     const user = await User.findById(req.params.id);
     if (user) {
@@ -139,7 +136,7 @@ export default class UserController {
       return res.status(404).json({ message: "Id of a User not found" });
     }
   }
-  //GET ALL Users
+
   static async findAllUser(req: Request, res: Response) {
     const users = await User.find();
     return res.status(200).json({
