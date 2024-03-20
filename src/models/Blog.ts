@@ -5,7 +5,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 const myDate = new Date();
 const dates = myDate.toISOString();
 
-export interface IBlog extends Document {
+export interface IBlog extends Document , Comment {
   title: string;
   content: string;
   likes: number;
