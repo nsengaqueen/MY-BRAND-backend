@@ -7,5 +7,5 @@ router.post(
   authentication,
   CommentController.addComment
 );
-router.post("/like/:blogId", CommentController.likeBlog);
+router.post("/like/:blogId",authentication, CommentController.likeBlog);
 export default router;

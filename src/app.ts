@@ -15,7 +15,7 @@ app.use(cors({
     credentials:true,
 }))
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.urlencoded({     
   extended: true
 }))
 
