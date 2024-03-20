@@ -34,21 +34,40 @@ export default class CommentController {
     }
   
    
-    static async likeBlog(req: Request, res: Response) {
+    static async toggleLikeBlog(req: Request, res: Response) {
       const blogId = req.params.blogId;
-  
+      const userId = req.user?.id;
       const blog = await Blog.findById(blogId);
-  
+    
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
+
+      if (!req.user) {
+        return res.status(401).json({ message: "you're required to login" });
+      }
+     
+      const hasLiked = blog.likedBy.includes(userId);
+
     
-      blog.likes++;
-      
+      if (hasLiked) {
+       
+        
+        const index = blog.likedBy.indexOf(userId);
+        blog.likes++
+        blog.likedBy.splice(index, 1); 
+      } else {
+        
+        blog.likes++;
+        blog.likedBy.push(userId);
+      }
+    
       await blog.save();
-  
-      return res
-        .status(201)
-        .json({ message: "Blog liked ", likes: blog.likes });
+    
+      return res.status(200).json({ message: "Blog liked/unliked", likes: blog.likedBy.length });
     }
+    
+
+
+    
   }

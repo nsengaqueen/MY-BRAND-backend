@@ -101,10 +101,7 @@ export const updateBlog = async (req: Request, res: Response) => {
     data: updatedBlog,
     message: "your Blog was successfully updated",
   });
-  // } catch (err) {
-  //   console.log(err)
-  //  return  res.status(500).json(err);
-  // }
+ 
 };
 
 export const deleteBlog = async (req: Request, res: Response): Promise<void> => {
