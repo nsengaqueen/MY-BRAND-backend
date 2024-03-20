@@ -11,7 +11,15 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import cors from 'cors'
 const app: Application = express();
 
+app.use(cors({
+    credentials:true,
+}))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}))
 
+app.use(bodyParser.json());
 
 
 
