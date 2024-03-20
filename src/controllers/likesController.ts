@@ -54,7 +54,7 @@ export default class CommentController {
        
         
         const index = blog.likedBy.indexOf(userId);
-        blog.likes++
+        blog.likes--
         blog.likedBy.splice(index, 1); 
       } else {
         
@@ -64,7 +64,7 @@ export default class CommentController {
     
       await blog.save();
     
-      return res.status(200).json({ message: "Blog liked/unliked", likes: blog.likedBy.length });
+      return res.status(200).json({ message: "Blog liked/unliked", likes: blog.likes});
     }
     
 
