@@ -2,16 +2,13 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import mongoose, { ConnectOptions } from 'mongoose';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-
 import userRoutes from './routes/userRoutes';
 import contactRoute from './routes/contactRoutes';
 import blogRoutes from './routes/blogRoutes';
 import likesRoutes from './routes/likesRoutes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import cors from 'cors';
-
-
+import cors from 'cors'
 const app: Application = express();
 
 app.use(cors({
@@ -22,12 +19,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  });
+
 
 
 
