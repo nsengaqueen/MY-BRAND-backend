@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
 //     next();
 // });
 
-const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://my-brand-backend-1-g6ra.onrender.com'];
+const allowedOrigins = ['http://localhost:5000', 'http://127.0.0.1:5500', 'https://my-brand-backend-1-g6ra.onrender.com'];
 const corsOptions:  CorsOptions = {
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
